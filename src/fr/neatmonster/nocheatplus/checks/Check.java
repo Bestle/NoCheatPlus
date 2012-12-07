@@ -5,10 +5,8 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
-import fr.neatmonster.nocheatplus.NoCheatPlus;
 import fr.neatmonster.nocheatplus.actions.ActionList;
 import fr.neatmonster.nocheatplus.actions.ParameterName;
-import fr.neatmonster.nocheatplus.compat.MCAccess;
 import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
 import fr.neatmonster.nocheatplus.metrics.MetricsData;
@@ -48,8 +46,6 @@ public abstract class Check {
 
     /** The type. */
     protected final CheckType type;
-    
-    protected final MCAccess mcAccess;
 
     /**
      * Instantiates a new check.
@@ -59,7 +55,6 @@ public abstract class Check {
      */
     public Check(final CheckType type) {
         this.type = type;
-        mcAccess = NoCheatPlus.getMCAccess();
         ViolationHistory.checkTypeMap.put(getClass().getName(), type);
         DataManager.registerExecutionHistory(type, histories);
     }

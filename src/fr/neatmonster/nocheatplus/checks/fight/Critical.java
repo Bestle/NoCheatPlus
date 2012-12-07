@@ -1,6 +1,5 @@
 package fr.neatmonster.nocheatplus.checks.fight;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
@@ -45,9 +44,8 @@ public class Critical extends Check {
         boolean cancel = false;
 
         // We'll need the PlayerLocation to know some important stuff.
-        final Location loc = player.getLocation();
-        final PlayerLocation location = new PlayerLocation(mcAccess.getBlockCache(loc.getWorld()));
-        location.set(loc, player);
+        final PlayerLocation location = new PlayerLocation();
+        location.set(player.getLocation(), player);
 		if (location.isIllegal()) {
 			location.cleanup();
 			CheckUtils.onIllegalMove(player);

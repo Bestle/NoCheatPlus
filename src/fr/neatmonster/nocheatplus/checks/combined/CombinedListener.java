@@ -1,5 +1,8 @@
 package fr.neatmonster.nocheatplus.checks.combined;
 
+import net.minecraft.server.v1_4_5.EntityPlayer;
+
+import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,9 +52,10 @@ public class CombinedListener extends CheckListener {
         
         if (cc.invulnerableCheck && (cc.invulnerableTriggerAlways || cc.invulnerableTriggerFallDistance && player.getFallDistance() > 0)){
             // TODO: maybe make a heuristic for small fall distances with ground under feet (prevents future abuse with jumping) ?
-            final int ticks = cc.invulnerableInitialTicksJoin >= 0 ? cc.invulnerableInitialTicksJoin : mcAccess.getInvulnerableTicks(player);
+            final EntityPlayer mcPlayer= ((CraftPlayer) player).getHandle();
+            final int ticks = cc.invulnerableInitialTicksJoin >= 0 ? cc.invulnerableInitialTicksJoin : mcPlayer.invulnerableTicks;
             data.invulnerableTick = TickTask.getTick() + ticks;
-            mcAccess.setInvulnerableTicks(player, 0);
+            mcPlayer.invulnerableTicks = 0;
         }
     }
     

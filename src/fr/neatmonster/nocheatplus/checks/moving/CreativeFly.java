@@ -2,7 +2,11 @@ package fr.neatmonster.nocheatplus.checks.moving;
 
 import java.util.Locale;
 
+import net.minecraft.server.v1_4_5.EntityPlayer;
+import net.minecraft.server.v1_4_5.MobEffectList;
+
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.actions.ParameterName;
@@ -72,14 +76,12 @@ public class CreativeFly extends Check {
         final double hDistance = Math.sqrt(xDistance * xDistance + zDistance * zDistance);
 
         // If the player is affected by potion of swiftness.
-        
-        final double speedModifier = mcAccess.getFasterMovementAmplifier(player);
-        final double fSpeed;
-        
-        if (speedModifier == Double.MIN_VALUE) fSpeed = 1D;
-        else fSpeed = 1D + 0.2D * (speedModifier + 1D);
-        
-        final double limitH = cc.creativeFlyHorizontalSpeed / 100D * HORIZONTAL_SPEED * fSpeed;
+        final EntityPlayer entity = ((CraftPlayer) player).getHandle();
+        final double limitH = cc.creativeFlyHorizontalSpeed
+                / 100D
+                * HORIZONTAL_SPEED
+                * (entity.hasEffect(MobEffectList.FASTER_MOVEMENT) ? 1D + 0.2D * (entity.getEffect(
+                        MobEffectList.FASTER_MOVEMENT).getAmplifier() + 1D) : 1D);
 
         // Finally, determine how far the player went beyond the set limits.
         double resultH = Math.max(0.0D, hDistance - data.horizontalFreedom - limitH);

@@ -1,6 +1,9 @@
 package fr.neatmonster.nocheatplus.checks.fight;
 
+import net.minecraft.server.v1_4_5.EntityPlayer;
+
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.NoCheatPlus;
@@ -102,10 +105,12 @@ public class GodMode extends Check {
                     @Override
                     public void run() {
                         try {
+                            final EntityPlayer entity = ((CraftPlayer) player).getHandle();
                             // Check again if the player should be dead, and if the game didn't mark him as dead.
-                            if (mcAccess.shouldBeZombie(player)){
+                            if (entity.getHealth() <= 0 && !entity.dead) {
                                 // Artificially "kill" him.
-                            	mcAccess.setDead(player, 19);
+                                entity.deathTicks = 19;
+                                entity.dead = true;
                             }
                         } catch (final Exception e) {}
                     }
